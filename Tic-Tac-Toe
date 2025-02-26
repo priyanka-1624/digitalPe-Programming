@@ -1,0 +1,72 @@
+#include <iostream>
+using namespace std;
+char board[3][3];
+
+// Function to print the Tic Tac Toe board
+void printBoard() {
+    for (int i = 0; i < 3; ++i) {
+        for (int j = 0; j < 3; ++j) {
+            cout << board[i][j] << " ";
+        }
+        cout << endl;
+    }
+}
+
+// Function to check if a player has won
+bool checkWin(char player) {
+    // Check rows, columns, and diagonals
+    for (int i = 0; i < 3; ++i) {
+        if (board[i][0] == player && board[i][1] == player && board[i][2] == player) return true; // Rows
+        if (board[0][i] == player && board[1][i] == player && board[2][i] == player) return true; // Columns
+    }
+    if (board[0][0] == player && board[1][1] == player && board[2][2] == player) return true; // Diagonal 1
+    if (board[0][2] == player && board[1][1] == player && board[2][0] == player) return true; // Diagonal 2
+    return false;
+}
+
+int main() {
+    // Initialize empty board
+    for (int i = 0; i < 3; ++i) {
+        for (int j = 0; j < 3; ++j) {
+            board[i][j] = ' ';
+        }
+    }
+
+    char currentPlayer = 'X'; // Player X starts
+
+    for (int turn = 0; turn < 9; ++turn) {
+        // Print the board
+        printBoard();
+
+        // Get player move
+        int row, col;
+        cout << "Player " << currentPlayer << ", enter your move (row column): ";
+        cin >> row >> col;
+
+        // Check if the chosen position is valid
+        if (row < 0 || row >= 3 || col < 0 || col >= 3 || board[row][col] != ' ') {
+            cout << "Invalid move! Try again." << endl;
+            --turn; // Repeat the same turn
+            continue;
+        }
+
+        // Update the board with player's move
+        board[row][col] = currentPlayer;
+
+        // Check if the current player has won
+        if (checkWin(currentPlayer)) {
+            cout << "Player " << currentPlayer << " wins!" << endl;
+            printBoard();
+            return 0;
+        }
+
+        // Switch player
+        currentPlayer = (currentPlayer == 'X') ? 'O' : 'X';
+    }
+
+    // If no one wins after 9 turns, it's a draw
+    cout << "It's a draw!" << endl;
+    printBoard();
+
+    return 0;
+}
